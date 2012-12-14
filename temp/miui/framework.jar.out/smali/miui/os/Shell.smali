@@ -28,6 +28,27 @@
     return-void
 .end method
 
+.method public static final boostCpuPulse()Z
+    .locals 1
+
+    .prologue
+    sget-boolean v0, Lmiui/os/Build;->IS_MITWO:Z
+
+    if-nez v0, :cond_0
+
+    const/4 v0, 0x0
+
+    :goto_0
+    return v0
+
+    :cond_0
+    invoke-static {}, Lmiui/os/Shell;->nativeBoostCpuPulse()Z
+
+    move-result v0
+
+    goto :goto_0
+.end method
+
 .method public static chmod(Ljava/lang/String;I)Z
     .locals 1
     .parameter "path"
@@ -104,6 +125,9 @@
     move-result v0
 
     return v0
+.end method
+
+.method private static native nativeBoostCpuPulse()Z
 .end method
 
 .method private static native nativeChmod(Ljava/lang/String;I)Z

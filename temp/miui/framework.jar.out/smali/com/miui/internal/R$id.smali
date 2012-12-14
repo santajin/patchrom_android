@@ -21,6 +21,8 @@
 
 .field public static final action_select_all:I = 0x60b0025
 
+.field public static final airplane_mode:I = 0x60b00bf
+
 .field public static final amPm:I = 0x60b0047
 
 .field public static final android_action_bar_container:I = 0x60b0004
@@ -54,6 +56,8 @@
 .field public static final android_custom:I = 0x60b00b2
 
 .field public static final android_customPanel:I = 0x60b00b1
+
+.field public static final android_emergencyCallButton:I = 0x60b00c0
 
 .field public static final android_expanded_menu:I = 0x60b00b6
 

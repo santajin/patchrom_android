@@ -19,6 +19,8 @@
 
 .field public static final ab_home_up_divider:I = 0x6020114
 
+.field public static final account_unlock_screen_bg:I = 0x60202e1
+
 .field public static final alphabet_indexer_bg:I = 0x6020000
 
 .field public static final alphabet_indexer_bg_normal:I = 0x6020001
@@ -278,6 +280,14 @@
 .field public static final file_icon_wma:I = 0x602000c
 
 .field public static final file_icon_zip:I = 0x6020014
+
+.field public static final find_device_btn:I = 0x60202e0
+
+.field public static final find_device_btn_n:I = 0x60202dd
+
+.field public static final find_device_btn_p:I = 0x60202de
+
+.field public static final find_device_warning:I = 0x60202df
 
 .field public static final flag_downloaded:I = 0x602003a
 

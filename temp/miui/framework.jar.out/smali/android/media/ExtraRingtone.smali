@@ -113,12 +113,14 @@
 .end method
 
 .method private static getTitle(Landroid/content/Context;Landroid/net/Uri;Z)Ljava/lang/String;
-    .locals 11
+    .locals 12
     .parameter "context"
     .parameter "uri"
     .parameter "followSettingsUri"
 
     .prologue
+    const/4 v2, 0x0
+
     const/4 v3, 0x0
 
     const/4 v8, 0x0
@@ -129,9 +131,9 @@
     move-result-object v0
 
     .local v0, res:Landroid/content/ContentResolver;
-    const/4 v10, 0x0
+    const/4 v11, 0x0
 
-    .local v10, title:Ljava/lang/String;
+    .local v11, title:Ljava/lang/String;
     if-eqz p1, :cond_3
 
     invoke-virtual {p1}, Landroid/net/Uri;->getAuthority()Ljava/lang/String;
@@ -158,9 +160,7 @@
     move-result-object v6
 
     .local v6, actualUri:Landroid/net/Uri;
-    const/4 v1, 0x0
-
-    invoke-static {p0, v6, v1}, Landroid/media/ExtraRingtone;->getTitle(Landroid/content/Context;Landroid/net/Uri;Z)Ljava/lang/String;
+    invoke-static {p0, v6, v2}, Landroid/media/ExtraRingtone;->getTitle(Landroid/content/Context;Landroid/net/Uri;Z)Ljava/lang/String;
 
     move-result-object v1
 
@@ -215,11 +215,11 @@
 
     invoke-interface {v8, v1}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v11
 
-    if-nez v10, :cond_2
+    if-nez v11, :cond_2
 
-    const-string v10, ""
+    const-string v11, ""
     :try_end_0
     .catchall {:try_start_0 .. :try_end_0} :catchall_0
 
@@ -232,17 +232,17 @@
     .end local v7           #authority:Ljava/lang/String;
     .end local v9           #fromDataBase:Z
     :cond_3
-    if-nez v10, :cond_9
+    if-nez v11, :cond_9
 
     const v1, 0x60c0195
 
     invoke-virtual {p0, v1}, Landroid/content/Context;->getString(I)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v11
 
     :cond_4
     :goto_3
-    move-object v1, v10
+    move-object v1, v11
 
     goto :goto_0
 
@@ -277,19 +277,35 @@
     if-eqz v9, :cond_7
 
     :try_start_1
-    const-string v10, ""
+    const-string v11, ""
 
     goto :goto_2
 
     :cond_7
     invoke-virtual {p1}, Landroid/net/Uri;->getLastPathSegment()Ljava/lang/String;
+
+    move-result-object v11
+
+    const-string v1, "_&_"
+
+    invoke-virtual {v11, v1}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
+
+    move-result v10
+
+    .local v10, sepIndex:I
+    if-lez v10, :cond_2
+
+    const/4 v1, 0x0
+
+    invoke-virtual {v11, v1, v10}, Ljava/lang/String;->substring(II)Ljava/lang/String;
     :try_end_1
     .catchall {:try_start_1 .. :try_end_1} :catchall_0
 
-    move-result-object v10
+    move-result-object v11
 
     goto :goto_2
 
+    .end local v10           #sepIndex:I
     :catchall_0
     move-exception v1
 
@@ -303,7 +319,7 @@
     .end local v7           #authority:Ljava/lang/String;
     .end local v9           #fromDataBase:Z
     :cond_9
-    invoke-virtual {v10}, Ljava/lang/String;->length()I
+    invoke-virtual {v11}, Ljava/lang/String;->length()I
 
     move-result v1
 
@@ -313,7 +329,7 @@
 
     invoke-virtual {p0, v1}, Landroid/content/Context;->getString(I)Ljava/lang/String;
 
-    move-result-object v10
+    move-result-object v11
 
     goto :goto_3
 .end method

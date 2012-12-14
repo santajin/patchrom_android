@@ -34,6 +34,8 @@
 
 .field public static final DELETED:Ljava/lang/String; = "deleted"
 
+.field public static final ERROR_TYPE:Ljava/lang/String; = "error_type"
+
 .field public static final FILE_ID:Ljava/lang/String; = "file_id"
 
 .field public static final MARKER:Ljava/lang/String; = "marker"

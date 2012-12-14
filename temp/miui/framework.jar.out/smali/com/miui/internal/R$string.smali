@@ -27,9 +27,9 @@
 
 .field public static final android_byteShort:I = 0x60c01de
 
-.field public static final android_capital_off:I = 0x60c0254
+.field public static final android_capital_off:I = 0x60c025c
 
-.field public static final android_capital_on:I = 0x60c0253
+.field public static final android_capital_on:I = 0x60c025b
 
 .field public static final android_common_last_name_prefixes:I = 0x60c019e
 
@@ -703,7 +703,15 @@
 
 .field public static final every_day:I = 0x60c01af
 
+.field public static final find_device_check_sim:I = 0x60c0263
+
 .field public static final find_device_sim_change_instructions:I = 0x60c01e5
+
+.field public static final find_device_sim_change_instructions_no_network:I = 0x60c0262
+
+.field public static final find_device_turn_off_flight_mode:I = 0x60c0260
+
+.field public static final find_device_turn_off_flight_mode_instructions:I = 0x60c0261
 
 .field public static final firewall_setting:I = 0x60c016a
 
@@ -963,9 +971,9 @@
 
 .field public static final resource_get_auth_checking:I = 0x60c0235
 
-.field public static final resource_get_auth_exceed_max_limit_tips:I = 0x60c0256
+.field public static final resource_get_auth_exceed_max_limit_tips:I = 0x60c025e
 
-.field public static final resource_get_auth_exceed_max_limit_title:I = 0x60c0255
+.field public static final resource_get_auth_exceed_max_limit_title:I = 0x60c025d
 
 .field public static final resource_get_auth_missing:I = 0x60c024d
 
@@ -999,7 +1007,7 @@
 
 .field public static final resource_server_out_of_service:I = 0x60c0237
 
-.field public static final resource_switch_account:I = 0x60c0257
+.field public static final resource_switch_account:I = 0x60c025f
 
 .field public static final resource_system_title:I = 0x60c01ba
 
@@ -1109,6 +1117,12 @@
 
 .field public static final status_bar_toggle_network_type_action:I = 0x60c0222
 
+.field public static final status_bar_toggle_power_high:I = 0x60c0259
+
+.field public static final status_bar_toggle_power_low:I = 0x60c0257
+
+.field public static final status_bar_toggle_power_mid:I = 0x60c0258
+
 .field public static final status_bar_toggle_power_mode:I = 0x60c0248
 
 .field public static final status_bar_toggle_power_mode_action:I = 0x60c0247
@@ -1116,6 +1130,10 @@
 .field public static final status_bar_toggle_privacy_mode:I = 0x60c020b
 
 .field public static final status_bar_toggle_reboot:I = 0x60c020c
+
+.field public static final status_bar_toggle_ring:I = 0x60c0252
+
+.field public static final status_bar_toggle_ringtone:I = 0x60c0253
 
 .field public static final status_bar_toggle_rotate:I = 0x60c020d
 
@@ -1130,6 +1148,12 @@
 .field public static final status_bar_toggle_sync:I = 0x60c0211
 
 .field public static final status_bar_toggle_sync_action:I = 0x60c0224
+
+.field public static final status_bar_toggle_sync_auto:I = 0x60c0254
+
+.field public static final status_bar_toggle_sync_manual:I = 0x60c0255
+
+.field public static final status_bar_toggle_syncing:I = 0x60c0256
 
 .field public static final status_bar_toggle_torch:I = 0x60c0212
 
@@ -1199,7 +1223,7 @@
 
 .field public static final user_agreement5:I = 0x60c0037
 
-.field public static final v5_icon_menu_bar_more_item_label:I = 0x60c0252
+.field public static final v5_icon_menu_bar_more_item_label:I = 0x60c025a
 
 .field public static final valentines_day:I = 0x60c0060
 

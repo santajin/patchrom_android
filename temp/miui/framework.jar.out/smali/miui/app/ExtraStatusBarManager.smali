@@ -32,9 +32,9 @@
 
 .field public static final DISABLE_BACKGROUND:I = 0x40000000
 
-.field public static final DISABLE_FOR_KEYGUARD:I = -0x80000000
+.field public static final DISABLE_FOREGROUND:I = 0x8000000
 
-.field public static final DISABLE_FOR_MUSIC:I = 0x8000000
+.field public static final DISABLE_FOR_KEYGUARD:I = -0x80000000
 
 .field public static final DISABLE_FULLSCREEN:I = 0x20000000
 
