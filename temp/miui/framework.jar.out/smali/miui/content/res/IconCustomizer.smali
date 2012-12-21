@@ -275,6 +275,14 @@
 
     sget-object v0, Lmiui/content/res/IconCustomizer;->sIconMapping:Ljava/util/Map;
 
+    const-string v1, "com.htc.fm.png"
+
+    const-string v2, "com.miui.fmradio.png"
+
+    invoke-interface {v0, v1, v2}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    sget-object v0, Lmiui/content/res/IconCustomizer;->sIconMapping:Ljava/util/Map;
+
     const-string v1, "com.sec.android.app.camera.Camera.png"
 
     const-string v2, "com.miui.camera.png"

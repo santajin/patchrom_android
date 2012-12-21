@@ -232,7 +232,7 @@
     .end local v7           #authority:Ljava/lang/String;
     .end local v9           #fromDataBase:Z
     :cond_3
-    if-nez v11, :cond_9
+    if-nez v11, :cond_a
 
     const v1, 0x60c0195
 
@@ -286,6 +286,8 @@
 
     move-result-object v11
 
+    if-eqz v11, :cond_8
+
     const-string v1, "_&_"
 
     invoke-virtual {v11, v1}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
@@ -293,6 +295,7 @@
     move-result v10
 
     .local v10, sepIndex:I
+    :goto_4
     if-lez v10, :cond_2
 
     const/4 v1, 0x0
@@ -306,19 +309,24 @@
     goto :goto_2
 
     .end local v10           #sepIndex:I
+    :cond_8
+    const/4 v10, -0x1
+
+    goto :goto_4
+
     :catchall_0
     move-exception v1
 
-    if-eqz v8, :cond_8
+    if-eqz v8, :cond_9
 
     invoke-interface {v8}, Landroid/database/Cursor;->close()V
 
-    :cond_8
+    :cond_9
     throw v1
 
     .end local v7           #authority:Ljava/lang/String;
     .end local v9           #fromDataBase:Z
-    :cond_9
+    :cond_a
     invoke-virtual {v11}, Ljava/lang/String;->length()I
 
     move-result v1

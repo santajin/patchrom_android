@@ -259,6 +259,8 @@
 
 .field public static final LAST_MINUTE_OF_DAY:I = 0x59f
 
+.field public static final LOCAL_SEA_LEVEL_PRESSURE:Ljava/lang/String; = "persist.sea_level_pressure"
+
 .field public static final MAX_DOWNLOADS:Ljava/lang/String; = "max_downloads"
 
 .field public static final MAX_DOWNLOADS_PER_DOMAIN:Ljava/lang/String; = "max_downloads_per_domain"
