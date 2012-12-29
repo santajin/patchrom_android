@@ -27,6 +27,46 @@
     return-void
 .end method
 
+.method public static blockAutoStartedApp(Landroid/content/pm/ApplicationInfo;Lcom/android/server/pm/Settings;)V
+    .locals 6
+    .parameter "info"
+    .parameter "curPkgSettings"
+
+    .prologue
+    const/4 v2, 0x1
+
+    invoke-static {}, Landroid/os/Process;->myUid()I
+
+    move-result v4
+
+    .local v4, uid:I
+    invoke-static {v4}, Landroid/os/UserId;->getUserId(I)I
+
+    move-result v5
+
+    .local v5, userId:I
+    if-eqz p0, :cond_0
+
+    iget v0, p0, Landroid/content/pm/ApplicationInfo;->flags:I
+
+    const/high16 v1, 0x4000
+
+    and-int/2addr v0, v1
+
+    if-eqz v0, :cond_0
+
+    iget-object v1, p0, Landroid/content/pm/ApplicationInfo;->packageName:Ljava/lang/String;
+
+    move-object v0, p1
+
+    move v3, v2
+
+    invoke-virtual/range {v0 .. v5}, Lcom/android/server/pm/Settings;->setPackageStoppedStateLPw(Ljava/lang/String;ZZII)Z
+
+    :cond_0
+    return-void
+.end method
+
 .method private static deleteOdexFile(Ljava/lang/String;)V
     .locals 4
     .parameter "apkName"

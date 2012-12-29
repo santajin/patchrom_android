@@ -76,6 +76,8 @@
 
 .field public static final ACTION_SET_LOCKSCREEN_WALLPAPER:Ljava/lang/String; = "android.intent.action.SET_LOCKSCREEN_WALLPAPER"
 
+.field public static final ACTION_SHOW_LOCK_SCREEN:Ljava/lang/String; = "miui.intent.action.ACTION_SHOW_LOCK_SCREEN"
+
 .field public static final ACTION_SHOW_MAGNIFIER:Ljava/lang/String; = "android.intent.action.SHOW_MAGNIFIER"
 
 .field public static final ACTION_START_ACTIVATE_PHONE:Ljava/lang/String; = "com.xiaomi.xmsf.action.START_ACTIVATE"

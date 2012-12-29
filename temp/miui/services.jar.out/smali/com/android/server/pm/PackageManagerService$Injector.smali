@@ -284,14 +284,18 @@
 .end method
 
 .method static setAccessControl(Lcom/android/server/pm/PackageManagerService;Ljava/lang/String;II)Z
-    .locals 8
+    .locals 10
     .parameter "service"
     .parameter "packageName"
     .parameter "newState"
     .parameter "flags"
 
     .prologue
-    const v7, 0x7fffffff
+    const v9, 0x7fffffff
+
+    const v8, -0x40000001
+
+    const/high16 v7, 0x4000
 
     const/high16 v6, -0x8000
 
@@ -304,6 +308,8 @@
     monitor-enter v0
 
     if-eq p2, v6, :cond_0
+
+    if-eq p2, v7, :cond_0
 
     const/4 v4, 0x0
 
@@ -330,11 +336,13 @@
     check-cast v2, Lcom/android/server/pm/PackageSetting;
 
     .local v2, pkgSetting:Lcom/android/server/pm/PackageSetting;
-    if-eqz v1, :cond_1
+    if-eqz v1, :cond_2
 
-    if-eqz v2, :cond_1
+    if-eqz v2, :cond_2
 
-    if-ne p3, v6, :cond_2
+    if-ne p2, v6, :cond_4
+
+    if-ne p3, v6, :cond_3
 
     iget v4, v2, Lcom/android/server/pm/PackageSetting;->pkgFlags:I
 
@@ -350,10 +358,11 @@
 
     iput v5, v4, Landroid/content/pm/ApplicationInfo;->flags:I
 
+    :cond_1
     :goto_1
     invoke-virtual {v3}, Lcom/android/server/pm/Settings;->writeLPr()V
 
-    :cond_1
+    :cond_2
     const/4 v4, 0x1
 
     monitor-exit v0
@@ -373,11 +382,11 @@
 
     .restart local v1       #pkg:Landroid/content/pm/PackageParser$Package;
     .restart local v2       #pkgSetting:Lcom/android/server/pm/PackageSetting;
-    :cond_2
+    :cond_3
     :try_start_1
     iget v4, v2, Lcom/android/server/pm/PackageSetting;->pkgFlags:I
 
-    and-int/2addr v4, v7
+    and-int/2addr v4, v9
 
     iput v4, v2, Lcom/android/server/pm/PackageSetting;->pkgFlags:I
 
@@ -385,7 +394,45 @@
 
     iget v5, v4, Landroid/content/pm/ApplicationInfo;->flags:I
 
-    and-int/2addr v5, v7
+    and-int/2addr v5, v9
+
+    iput v5, v4, Landroid/content/pm/ApplicationInfo;->flags:I
+
+    goto :goto_1
+
+    :cond_4
+    if-ne p2, v7, :cond_1
+
+    if-ne p3, v7, :cond_5
+
+    iget v4, v2, Lcom/android/server/pm/PackageSetting;->pkgFlags:I
+
+    or-int/2addr v4, v7
+
+    iput v4, v2, Lcom/android/server/pm/PackageSetting;->pkgFlags:I
+
+    iget-object v4, v1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget v5, v4, Landroid/content/pm/ApplicationInfo;->flags:I
+
+    or-int/2addr v5, v7
+
+    iput v5, v4, Landroid/content/pm/ApplicationInfo;->flags:I
+
+    goto :goto_1
+
+    :cond_5
+    iget v4, v2, Lcom/android/server/pm/PackageSetting;->pkgFlags:I
+
+    and-int/2addr v4, v8
+
+    iput v4, v2, Lcom/android/server/pm/PackageSetting;->pkgFlags:I
+
+    iget-object v4, v1, Landroid/content/pm/PackageParser$Package;->applicationInfo:Landroid/content/pm/ApplicationInfo;
+
+    iget v5, v4, Landroid/content/pm/ApplicationInfo;->flags:I
+
+    and-int/2addr v5, v8
 
     iput v5, v4, Landroid/content/pm/ApplicationInfo;->flags:I
     :try_end_1

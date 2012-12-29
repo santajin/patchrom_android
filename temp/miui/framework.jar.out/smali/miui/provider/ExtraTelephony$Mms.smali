@@ -50,6 +50,8 @@
 
 .field public static final PREVIEW_DATA:Ljava/lang/String; = "preview_data"
 
+.field public static final PREVIEW_DATA_TS:Ljava/lang/String; = "preview_data_ts"
+
 .field public static final PREVIEW_TYPE:Ljava/lang/String; = "preview_type"
 
 .field public static final SNIPPET:Ljava/lang/String; = "snippet"

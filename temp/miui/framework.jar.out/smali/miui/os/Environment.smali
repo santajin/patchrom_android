@@ -202,6 +202,75 @@
     return-void
 .end method
 
+.method public static getFreeMemory()J
+    .locals 11
+
+    .prologue
+    const/4 v9, 0x3
+
+    new-array v7, v9, [Ljava/lang/String;
+
+    const/4 v9, 0x0
+
+    const-string v10, "MemFree:"
+
+    aput-object v10, v7, v9
+
+    const/4 v9, 0x1
+
+    const-string v10, "Buffers:"
+
+    aput-object v10, v7, v9
+
+    const/4 v9, 0x2
+
+    const-string v10, "Cached:"
+
+    aput-object v10, v7, v9
+
+    .local v7, memInfoFields:[Ljava/lang/String;
+    array-length v9, v7
+
+    new-array v8, v9, [J
+
+    .local v8, memInfoSizes:[J
+    const-string v9, "/proc/meminfo"
+
+    invoke-static {v9, v7, v8}, Landroid/os/Process;->readProcLines(Ljava/lang/String;[Ljava/lang/String;[J)V
+
+    const-wide/16 v1, 0x0
+
+    .local v1, free:J
+    move-object v0, v8
+
+    .local v0, arr$:[J
+    array-length v4, v0
+
+    .local v4, len$:I
+    const/4 v3, 0x0
+
+    .local v3, i$:I
+    :goto_0
+    if-ge v3, v4, :cond_0
+
+    aget-wide v5, v0, v3
+
+    .local v5, mem:J
+    add-long/2addr v1, v5
+
+    add-int/lit8 v3, v3, 0x1
+
+    goto :goto_0
+
+    .end local v5           #mem:J
+    :cond_0
+    const-wide/16 v9, 0x400
+
+    mul-long/2addr v9, v1
+
+    return-wide v9
+.end method
+
 .method public static getInternalStorageDirectory()Ljava/io/File;
     .locals 1
 
@@ -246,6 +315,60 @@
 
     :cond_0
     sget-object v0, Lmiui/os/Environment;->INTERNAL_STORAGE_MIUI_DIRECTORY:Ljava/io/File;
+
+    goto :goto_0
+.end method
+
+.method public static getOomMinFree()J
+    .locals 5
+
+    .prologue
+    :try_start_0
+    const-string v3, "/sys/module/lowmemorykiller/parameters/minfree"
+
+    invoke-static {v3}, Llibcore/io/IoUtils;->readFileAsString(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v1
+
+    .local v1, line:Ljava/lang/String;
+    invoke-virtual {v1}, Ljava/lang/String;->trim()Ljava/lang/String;
+
+    move-result-object v3
+
+    const/16 v4, 0x2c
+
+    invoke-virtual {v1, v4}, Ljava/lang/String;->lastIndexOf(I)I
+
+    move-result v4
+
+    add-int/lit8 v4, v4, 0x1
+
+    invoke-virtual {v3, v4}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v3}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+    :try_end_0
+    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
+
+    move-result v2
+
+    .local v2, value:I
+    mul-int/lit8 v3, v2, 0x4
+
+    int-to-long v3, v3
+
+    .end local v2           #value:I
+    :goto_0
+    return-wide v3
+
+    :catch_0
+    move-exception v0
+
+    .local v0, e:Ljava/lang/Exception;
+    invoke-virtual {v0}, Ljava/lang/Exception;->printStackTrace()V
+
+    const-wide/16 v3, 0x0
 
     goto :goto_0
 .end method

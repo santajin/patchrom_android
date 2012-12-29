@@ -42,6 +42,12 @@
 
 .field public static final FLAG_DEBUGGABLE:I = 0x2
 
+.field public static final FLAG_DISABLE_AUTOSTART:I = 0x40000000
+    .annotation build Landroid/annotation/MiuiHook;
+        value = .enum Landroid/annotation/MiuiHook$MiuiHookType;->NEW_FIELD:Landroid/annotation/MiuiHook$MiuiHookType;
+    .end annotation
+.end field
+
 .field public static final FLAG_EXTERNAL_STORAGE:I = 0x40000
 
 .field public static final FLAG_FACTORY_TEST:I = 0x10
