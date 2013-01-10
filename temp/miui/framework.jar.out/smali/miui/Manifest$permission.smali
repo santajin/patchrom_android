@@ -17,7 +17,7 @@
 # static fields
 .field public static final ACCESS_NOTE:Ljava/lang/String; = "com.miui.notes.permission.ACCESS_NOTE"
 
-.field public static final ACTIVATE_MIMSG:Ljava/lang/String; = "com.xiaomi.permission.ACTIVATE_MIMSG"
+.field public static final ACTIVATE_SIM:Ljava/lang/String; = "com.xiaomi.permission.ACTIVATE_SIM"
 
 .field public static final AUTO_BACKUP:Ljava/lang/String; = "com.miui.backup.permission.AUTO_BACKUP"
 

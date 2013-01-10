@@ -6,7 +6,7 @@
 # static fields
 .field public static final ACTION_ACCESS_CONTROL_CHANGED:Ljava/lang/String; = "android.intent.action.ACCESS_CONTROL_CHANGED"
 
-.field public static final ACTION_ACTIVATE_MX_EXTERNAL:Ljava/lang/String; = "com.xiaomi.action.ACTIVATE_MX_EXTERNAL"
+.field public static final ACTION_ACTIVATE_ALL_MI_SERVICES:Ljava/lang/String; = "com.xiaomi.action.ACTIVATE_ALL_MI_SERVICES"
 
 .field public static final ACTION_ACTIVATE_PHONE:Ljava/lang/String; = "android.intent.action.XIAOMI_ACTIVATE_PHONE"
 
@@ -79,6 +79,8 @@
 .field public static final ACTION_SHOW_LOCK_SCREEN:Ljava/lang/String; = "miui.intent.action.ACTION_SHOW_LOCK_SCREEN"
 
 .field public static final ACTION_SHOW_MAGNIFIER:Ljava/lang/String; = "android.intent.action.SHOW_MAGNIFIER"
+
+.field public static final ACTION_SIM_ACTIVATED:Ljava/lang/String; = "com.xiaomi.action.SIM_ACTIVATED"
 
 .field public static final ACTION_START_ACTIVATE_PHONE:Ljava/lang/String; = "com.xiaomi.xmsf.action.START_ACTIVATE"
 
@@ -186,6 +188,8 @@
 
 .field public static final EXTRA_SIM_ID:Ljava/lang/String; = "extra_simId"
 
+.field public static final EXTRA_SIM_PASS_TOKEN:Ljava/lang/String; = "extra_sim_pass_token"
+
 .field public static final EXTRA_UPDATE_APPLICATION_COMPONENT_NAME:Ljava/lang/String; = "android.intent.extra.update_application_component_name"
 
 .field public static final EXTRA_UPDATE_APPLICATION_MESSAGE_ICON_TILE:Ljava/lang/String; = "android.intent.extra.update_application_message_icon_tile"
@@ -193,6 +197,8 @@
 .field public static final EXTRA_UPDATE_APPLICATION_MESSAGE_TEXT:Ljava/lang/String; = "android.intent.extra.update_application_message_text"
 
 .field public static final EXTRA_UPDATE_APPLICATION_MESSAGE_TEXT_BACKGROUND:Ljava/lang/String; = "android.intent.extra.update_application_message_text_background"
+
+.field public static final EXTRA_USER_ID:Ljava/lang/String; = "extra_user_id"
 
 .field public static final EXTRA_VIEW_SIM_CONTACTS:Ljava/lang/String; = "view_sim_contacts"
 

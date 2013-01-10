@@ -4,7 +4,7 @@
 
 
 # static fields
-.field public static final FEATURE_WIFI_DISPLAY:Ljava/lang/String; = "android.hardware.wifi.display"
+.field public static final FEATURE_WIFI_DISPLAY:Ljava/lang/String; = "com.qualcomm.wifi_display"
 
 .field static final GOOGLE_SIGNATURES:[Landroid/content/pm/Signature; = null
 
