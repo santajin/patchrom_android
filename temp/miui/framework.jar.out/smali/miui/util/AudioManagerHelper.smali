@@ -151,13 +151,15 @@
     .parameter "flag"
 
     .prologue
-    const/4 v4, 0x0
+    const/4 v7, 0x1
+
+    const/4 v6, 0x0
 
     const/4 v5, 0x2
 
-    const-string v6, "audio"
+    const-string v3, "audio"
 
-    invoke-virtual {p0, v6}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+    invoke-virtual {p0, v3}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
 
     move-result-object v0
 
@@ -166,49 +168,66 @@
     .local v0, am:Landroid/media/AudioManager;
     invoke-virtual {v0}, Landroid/media/AudioManager;->getRingerMode()I
 
-    move-result v1
+    move-result v3
 
-    .local v1, mode:I
-    if-ne v5, v1, :cond_2
-
-    move v2, v4
-
-    .local v2, newMode:I
-    :goto_0
-    invoke-virtual {v0, v2}, Landroid/media/AudioManager;->setRingerMode(I)V
-
-    if-ne v5, v2, :cond_0
+    if-ne v5, v3, :cond_3
 
     invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
-    move-result-object v6
+    move-result-object v3
 
-    const-string v7, "last_audible_ring_volume"
+    const-string v4, "vibrate_in_silent"
 
-    invoke-static {v6, v7, v4}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+    invoke-static {v3, v4, v7}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 
     move-result v3
 
-    .local v3, volume:I
-    if-lez v3, :cond_0
+    if-ne v3, v7, :cond_2
 
-    invoke-virtual {v0, v5, v3, v4}, Landroid/media/AudioManager;->setStreamVolume(III)V
+    const/4 v1, 0x1
 
-    .end local v3           #volume:I
+    .local v1, newMode:I
+    :goto_0
+    invoke-virtual {v0, v1}, Landroid/media/AudioManager;->setRingerMode(I)V
+
+    if-ne v5, v1, :cond_0
+
+    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v3
+
+    const-string v4, "last_audible_ring_volume"
+
+    invoke-static {v3, v4, v6}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+
+    move-result v2
+
+    .local v2, volume:I
+    if-lez v2, :cond_0
+
+    invoke-virtual {v0, v5, v2, v6}, Landroid/media/AudioManager;->setStreamVolume(III)V
+
+    .end local v2           #volume:I
     :cond_0
-    invoke-static {p0}, Lmiui/util/AudioManagerHelper;->validateRingerMode(Landroid/content/Context;)V
-
     if-eqz p1, :cond_1
 
-    invoke-virtual {v0, v5, v4, p1}, Landroid/media/AudioManager;->adjustStreamVolume(III)V
+    invoke-virtual {v0, v5, v6, p1}, Landroid/media/AudioManager;->adjustStreamVolume(III)V
 
     :cond_1
     return-void
 
-    .end local v2           #newMode:I
+    .end local v1           #newMode:I
     :cond_2
-    move v2, v5
+    const/4 v1, 0x0
 
+    .restart local v1       #newMode:I
+    goto :goto_0
+
+    .end local v1           #newMode:I
+    :cond_3
+    const/4 v1, 0x2
+
+    .restart local v1       #newMode:I
     goto :goto_0
 .end method
 
@@ -241,13 +260,11 @@
 .end method
 
 .method private static validateRingerMode(Landroid/content/Context;)V
-    .locals 7
+    .locals 6
     .parameter "context"
 
     .prologue
-    const/4 v6, 0x1
-
-    const/4 v5, 0x0
+    const/4 v5, 0x1
 
     const-string v4, "audio"
 
@@ -268,42 +285,31 @@
     move-result v1
 
     .local v1, mode:I
-    const/4 v3, 0x0
-
-    .local v3, vibrate:Z
-    const/4 v4, 0x2
-
-    if-ne v4, v1, :cond_1
-
-    const-string v4, "vibrate_in_normal"
+    const-string v4, "vibrate_in_silent"
 
     invoke-static {v2, v4, v5}, Lmiui/provider/ExtraSettings$System;->getBoolean(Landroid/content/ContentResolver;Ljava/lang/String;Z)Z
 
     move-result v3
+
+    .local v3, vibrate:Z
+    if-nez v1, :cond_1
+
+    if-eqz v3, :cond_0
+
+    invoke-virtual {v0, v5}, Landroid/media/AudioManager;->setRingerMode(I)V
 
     :cond_0
     :goto_0
     return-void
 
     :cond_1
-    const-string v4, "vibrate_in_silent"
+    if-ne v5, v1, :cond_0
 
-    invoke-static {v2, v4, v6}, Lmiui/provider/ExtraSettings$System;->getBoolean(Landroid/content/ContentResolver;Ljava/lang/String;Z)Z
-
-    move-result v3
-
-    if-nez v1, :cond_2
-
-    if-eqz v3, :cond_0
-
-    invoke-virtual {v0, v6}, Landroid/media/AudioManager;->setRingerMode(I)V
-
-    goto :goto_0
-
-    :cond_2
     if-nez v3, :cond_0
 
-    invoke-virtual {v0, v5}, Landroid/media/AudioManager;->setRingerMode(I)V
+    const/4 v4, 0x0
+
+    invoke-virtual {v0, v4}, Landroid/media/AudioManager;->setRingerMode(I)V
 
     goto :goto_0
 .end method

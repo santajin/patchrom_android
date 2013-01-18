@@ -467,7 +467,7 @@
     .parameter "themeChangeFlags"
 
     .prologue
-    const-wide/32 v0, 0x42019
+    const-wide/32 v0, 0x43019
 
     and-long/2addr v0, p0
 
