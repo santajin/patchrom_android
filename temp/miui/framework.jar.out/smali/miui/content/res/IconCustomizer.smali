@@ -1715,6 +1715,17 @@
     return-object v5
 .end method
 
+.method public static getFancyIconFile(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    .locals 1
+    .parameter "packageName"
+    .parameter "className"
+
+    .prologue
+    const/4 v0, 0x0
+
+    return-object v0
+.end method
+
 .method public static getFileName(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
     .locals 4
     .parameter "packageName"

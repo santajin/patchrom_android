@@ -6,6 +6,7 @@
 # annotations
 .annotation system Ldalvik/annotation/MemberClasses;
     value = {
+        Lmiui/provider/GalleryCloudUtils$1;,
         Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;
     }
 .end annotation
@@ -164,31 +165,53 @@
     goto :goto_1
 .end method
 
-.method public static getMimeTypeByGroupID(I)Ljava/lang/String;
-    .locals 1
-    .parameter "groupID"
+.method private static getMimeTypeByFileName(Ljava/lang/String;)Ljava/lang/String;
+    .locals 2
+    .parameter "fileName"
 
     .prologue
-    const/4 v0, 0x1
+    invoke-static {p0}, Lmiui/os/ExtraFileUtils;->getExtension(Ljava/lang/String;)Ljava/lang/String;
 
-    if-ne p0, v0, :cond_0
+    move-result-object v0
 
-    const-string v0, "image/jpeg"
+    .local v0, extention:Ljava/lang/String;
+    const-string v1, "jpeg"
 
-    :goto_0
-    return-object v0
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_0
+
+    const-string v1, "jpg"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1
 
     :cond_0
-    const/4 v0, 0x2
+    const-string v1, "image/jpeg"
 
-    if-ne p0, v0, :cond_1
+    :goto_0
+    return-object v1
 
-    const-string v0, "image/png"
+    :cond_1
+    const-string v1, "png"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_2
+
+    const-string v1, "image/png"
 
     goto :goto_0
 
-    :cond_1
-    const-string v0, ""
+    :cond_2
+    const-string v1, ""
 
     goto :goto_0
 .end method
@@ -321,34 +344,71 @@
 .end method
 
 .method public static saveToCloudDB(Landroid/content/Context;Ljava/lang/String;II)V
-    .locals 2
+    .locals 6
     .parameter "context"
     .parameter "filePath"
     .parameter "groupId"
     .parameter "serverType"
 
     .prologue
-    const/4 v0, 0x1
+    const-string v4, ""
 
-    .local v0, localFlag:I
-    invoke-static {p0}, Lmiui/provider/GalleryCloudUtils;->isGalleryCloudSyncable(Landroid/content/Context;)Z
+    const/4 v5, 0x7
 
-    move-result v1
+    move-object v0, p0
 
-    if-eqz v1, :cond_0
+    move-object v1, p1
 
-    const/4 v0, 0x4
+    move v2, p2
 
-    :cond_0
-    invoke-static {p0, p1, p2, p3, v0}, Lmiui/provider/GalleryCloudUtils;->saveToCloudDBWithoutSync(Landroid/content/Context;Ljava/lang/String;III)V
+    move v3, p3
 
-    invoke-static {p0}, Lmiui/provider/GalleryCloudUtils;->requestSync(Landroid/content/Context;)V
+    invoke-static/range {v0 .. v5}, Lmiui/provider/GalleryCloudUtils;->saveToCloudDB(Landroid/content/Context;Ljava/lang/String;IILjava/lang/String;I)V
 
     return-void
 .end method
 
+.method public static saveToCloudDB(Landroid/content/Context;Ljava/lang/String;IILjava/lang/String;I)V
+    .locals 6
+    .parameter "context"
+    .parameter "filePath"
+    .parameter "groupId"
+    .parameter "serverType"
+    .parameter "localGroupId"
+    .parameter "localFlag"
+
+    .prologue
+    invoke-static {p0}, Lmiui/provider/GalleryCloudUtils;->isGalleryCloudSyncable(Landroid/content/Context;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    :goto_0
+    return-void
+
+    :cond_0
+    move-object v0, p0
+
+    move-object v1, p1
+
+    move v2, p2
+
+    move v3, p3
+
+    move v4, p5
+
+    move-object v5, p4
+
+    invoke-static/range {v0 .. v5}, Lmiui/provider/GalleryCloudUtils;->saveToCloudDBWithoutSync(Landroid/content/Context;Ljava/lang/String;IIILjava/lang/String;)V
+
+    invoke-static {p0}, Lmiui/provider/GalleryCloudUtils;->requestSync(Landroid/content/Context;)V
+
+    goto :goto_0
+.end method
+
 .method public static saveToCloudDBWithoutSync(Landroid/content/Context;Ljava/lang/String;III)V
-    .locals 19
+    .locals 6
     .parameter "context"
     .parameter "filePath"
     .parameter "groupId"
@@ -356,721 +416,670 @@
     .parameter "localFlag"
 
     .prologue
-    new-instance v18, Ljava/io/File;
+    const-string v5, ""
 
-    move-object/from16 v0, v18
+    move-object v0, p0
 
-    move-object/from16 v1, p1
+    move-object v1, p1
 
-    invoke-direct {v0, v1}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+    move v2, p2
 
-    .local v18, file:Ljava/io/File;
-    invoke-virtual/range {v18 .. v18}, Ljava/io/File;->exists()Z
+    move v3, p3
 
-    move-result v3
+    move v4, p4
 
-    if-nez v3, :cond_0
+    invoke-static/range {v0 .. v5}, Lmiui/provider/GalleryCloudUtils;->saveToCloudDBWithoutSync(Landroid/content/Context;Ljava/lang/String;IIILjava/lang/String;)V
 
-    const-string v3, "GalleryCloudUtils"
+    return-void
+.end method
 
-    new-instance v4, Ljava/lang/StringBuilder;
+.method private static saveToCloudDBWithoutSync(Landroid/content/Context;Ljava/lang/String;IIILjava/lang/String;)V
+    .locals 16
+    .parameter "context"
+    .parameter "filePath"
+    .parameter "groupId"
+    .parameter "serverType"
+    .parameter "localFlag"
+    .parameter "localGroupId"
 
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v5, "file not exist:"
-
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v4
+    .prologue
+    new-instance v15, Ljava/io/File;
 
     move-object/from16 v0, p1
 
-    invoke-virtual {v4, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-direct {v15, v0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    move-result-object v4
+    .local v15, file:Ljava/io/File;
+    invoke-virtual {v15}, Ljava/io/File;->exists()Z
 
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result v2
 
-    move-result-object v4
+    if-nez v2, :cond_0
 
-    invoke-static {v3, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    const-string v2, "GalleryCloudUtils"
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v4, "file not exist:"
+
+    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v3
+
+    move-object/from16 v0, p1
+
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     :goto_0
     return-void
 
     :cond_0
-    new-instance v2, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;
+    new-instance v1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;
 
-    invoke-virtual/range {v18 .. v18}, Ljava/io/File;->length()J
+    invoke-virtual {v15}, Ljava/io/File;->length()J
 
-    move-result-wide v4
+    move-result-wide v3
 
-    invoke-static/range {p2 .. p2}, Lmiui/provider/GalleryCloudUtils;->getMimeTypeByGroupID(I)Ljava/lang/String;
+    invoke-virtual {v15}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-static {v2}, Lmiui/provider/GalleryCloudUtils;->getMimeTypeByFileName(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v15}, Lmiui/os/ExtraFileUtils;->getFileTitle(Ljava/io/File;)Ljava/lang/String;
 
     move-result-object v6
 
-    invoke-static/range {v18 .. v18}, Lmiui/os/ExtraFileUtils;->getFileTitle(Ljava/io/File;)Ljava/lang/String;
+    invoke-virtual {v15}, Ljava/io/File;->getName()Ljava/lang/String;
 
     move-result-object v7
 
-    invoke-virtual/range {v18 .. v18}, Ljava/io/File;->getName()Ljava/lang/String;
+    invoke-virtual {v15}, Ljava/io/File;->lastModified()J
 
-    move-result-object v8
-
-    invoke-virtual/range {v18 .. v18}, Ljava/io/File;->lastModified()J
-
-    move-result-wide v9
-
-    const/4 v11, 0x0
-
-    const/4 v12, 0x0
-
-    const/4 v13, 0x0
+    move-result-wide v8
 
     const/4 v14, 0x0
 
-    move-object/from16 v3, p1
+    move-object/from16 v2, p1
 
-    move/from16 v15, p2
+    move/from16 v10, p2
 
-    move/from16 v16, p3
+    move/from16 v11, p3
 
-    move/from16 v17, p4
+    move/from16 v12, p4
 
-    invoke-direct/range {v2 .. v17}, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;-><init>(Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JIIILandroid/location/Location;III)V
+    move-object/from16 v13, p5
 
-    .local v2, toSave:Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;
+    invoke-direct/range {v1 .. v14}, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;-><init>(Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JIIILjava/lang/String;Lmiui/provider/GalleryCloudUtils$1;)V
+
+    .local v1, toSave:Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;
     move-object/from16 v0, p0
 
-    invoke-static {v0, v2}, Lmiui/provider/GalleryCloudUtils;->saveToCloudDBWithoutSync(Landroid/content/Context;Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;)V
+    invoke-static {v0, v1}, Lmiui/provider/GalleryCloudUtils;->saveToCloudDBWithoutSync(Landroid/content/Context;Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;)V
 
     goto :goto_0
 .end method
 
 .method private static saveToCloudDBWithoutSync(Landroid/content/Context;Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;)V
-    .locals 16
+    .locals 13
     .parameter "context"
     .parameter "toSave"
 
     .prologue
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v8
+    move-result-wide v5
 
-    .local v8, start:J
-    invoke-static/range {p0 .. p0}, Lmiui/provider/GalleryCloudUtils;->existXiaomiAccount(Landroid/content/Context;)Z
+    .local v5, start:J
+    invoke-static {p0}, Lmiui/provider/GalleryCloudUtils;->existXiaomiAccount(Landroid/content/Context;)Z
 
-    move-result v12
+    move-result v9
 
-    if-nez v12, :cond_0
+    if-nez v9, :cond_0
 
     :goto_0
     return-void
 
     :cond_0
     :try_start_0
-    new-instance v3, Landroid/media/ExifInterface;
+    new-instance v2, Landroid/media/ExifInterface;
 
-    move-object/from16 v0, p1
+    iget-object v9, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
 
-    iget-object v12, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
+    invoke-direct {v2, v9}, Landroid/media/ExifInterface;-><init>(Ljava/lang/String;)V
 
-    invoke-direct {v3, v12}, Landroid/media/ExifInterface;-><init>(Ljava/lang/String;)V
+    .local v2, exifInterface:Landroid/media/ExifInterface;
+    new-instance v7, Landroid/content/ContentValues;
 
-    .local v3, exifInterface:Landroid/media/ExifInterface;
-    new-instance v10, Landroid/content/ContentValues;
+    invoke-direct {v7}, Landroid/content/ContentValues;-><init>()V
 
-    invoke-direct {v10}, Landroid/content/ContentValues;-><init>()V
+    .local v7, values:Landroid/content/ContentValues;
+    const-string v9, "groupId"
 
-    .local v10, values:Landroid/content/ContentValues;
-    const-string v12, "groupId"
+    iget v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->groupId:I
 
-    move-object/from16 v0, p1
+    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    iget v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->groupId:I
+    move-result-object v10
 
-    invoke-static {v13}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
-    move-result-object v13
+    const-string v9, "serverType"
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    iget v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->serverType:I
 
-    const-string v12, "serverType"
+    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    move-object/from16 v0, p1
+    move-result-object v10
 
-    iget v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->serverType:I
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
-    invoke-static {v13}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    const-string v9, "localFlag"
 
-    move-result-object v13
+    iget v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localFlag:I
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    const-string v12, "localFlag"
+    move-result-object v10
 
-    move-object/from16 v0, p1
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
-    iget v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localFlag:I
+    const-string v9, "size"
 
-    invoke-static {v13}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    iget-wide v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->size:J
 
-    move-result-object v13
+    invoke-static {v10, v11}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    move-result-object v10
 
-    const-string v12, "size"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
 
-    move-object/from16 v0, p1
+    const-string v9, "mimeType"
 
-    iget-wide v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->size:J
+    iget-object v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->mimeType:Ljava/lang/String;
 
-    invoke-static {v13, v14}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-result-object v13
+    const-string v9, "title"
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
+    iget-object v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->title:Ljava/lang/String;
 
-    const-string v12, "mimeType"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-object/from16 v0, p1
+    const-string v9, "fileName"
 
-    iget-object v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->mimeType:Ljava/lang/String;
+    iget-object v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->fileName:Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v12, "title"
+    const-string v9, "dateTaken"
 
-    move-object/from16 v0, p1
+    iget-wide v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->dateTaken:J
 
-    iget-object v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->title:Ljava/lang/String;
+    invoke-static {v10, v11}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "fileName"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
 
-    move-object/from16 v0, p1
+    iget v9, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localFlag:I
 
-    iget-object v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->fileName:Ljava/lang/String;
+    const/16 v10, 0x8
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    if-ne v9, v10, :cond_1
 
-    const-string v12, "dateTaken"
+    const-string v9, "microthumbfile"
 
-    move-object/from16 v0, p1
+    iget-object v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
 
-    iget-wide v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->dateTaken:J
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    invoke-static {v13, v14}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+    const-string v9, "thumbnailFile"
 
-    move-result-object v13
+    iget-object v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
-
-    new-instance v4, Ljava/io/File;
-
-    move-object/from16 v0, p1
-
-    iget-object v12, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
-
-    invoke-direct {v4, v12}, Ljava/io/File;-><init>(Ljava/lang/String;)V
-
-    .local v4, file:Ljava/io/File;
-    invoke-virtual {v4}, Ljava/io/File;->exists()Z
-
-    move-result v12
-
-    if-eqz v12, :cond_1
-
-    const-string v12, "dateModified"
-
-    invoke-virtual {v4}, Ljava/io/File;->lastModified()J
-
-    move-result-wide v13
-
-    invoke-static {v13, v14}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
-
-    move-result-object v13
-
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     :cond_1
-    const-string v12, "localFile"
+    iget-object v9, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localGroupId:Ljava/lang/String;
 
-    move-object/from16 v0, p1
+    invoke-static {v9}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
 
-    iget-object v13, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
+    move-result v9
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    if-nez v9, :cond_2
 
-    const-string v12, "ImageWidth"
+    const-string v9, "localGroupId"
 
-    const/4 v13, 0x0
+    iget-object v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localGroupId:Ljava/lang/String;
 
-    invoke-virtual {v3, v12, v13}, Landroid/media/ExifInterface;->getAttributeInt(Ljava/lang/String;I)I
-
-    move-result v11
-
-    .local v11, width:I
-    const-string v12, "ImageLength"
-
-    const/4 v13, 0x0
-
-    invoke-virtual {v3, v12, v13}, Landroid/media/ExifInterface;->getAttributeInt(Ljava/lang/String;I)I
-
-    move-result v5
-
-    .local v5, height:I
-    if-lez v11, :cond_2
-
-    if-gtz v5, :cond_3
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
     :cond_2
-    move-object/from16 v0, p1
+    new-instance v3, Ljava/io/File;
 
-    iget-object v12, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
+    iget-object v9, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
 
-    invoke-static {v12}, Lmiui/util/ImageUtils;->getBitmapSize(Ljava/lang/String;)Landroid/graphics/BitmapFactory$Options;
+    invoke-direct {v3, v9}, Ljava/io/File;-><init>(Ljava/lang/String;)V
 
-    move-result-object v1
+    .local v3, file:Ljava/io/File;
+    invoke-virtual {v3}, Ljava/io/File;->exists()Z
 
-    .local v1, bitmapOptions:Landroid/graphics/BitmapFactory$Options;
-    iget v11, v1, Landroid/graphics/BitmapFactory$Options;->outWidth:I
+    move-result v9
 
-    iget v5, v1, Landroid/graphics/BitmapFactory$Options;->outHeight:I
+    if-eqz v9, :cond_3
 
-    .end local v1           #bitmapOptions:Landroid/graphics/BitmapFactory$Options;
+    const-string v9, "dateModified"
+
+    invoke-virtual {v3}, Ljava/io/File;->lastModified()J
+
+    move-result-wide v10
+
+    invoke-static {v10, v11}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v10
+
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
+
     :cond_3
-    const-string v12, "exifImageWidth"
+    const-string v9, "localFile"
 
-    invoke-static {v11}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    iget-object v10, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
 
-    move-result-object v13
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    const-string v9, "ImageWidth"
 
-    const-string v12, "exifImageLength"
+    const/4 v10, 0x0
 
-    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+    invoke-virtual {v2, v9, v10}, Landroid/media/ExifInterface;->getAttributeInt(Ljava/lang/String;I)I
 
-    move-result-object v13
+    move-result v8
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+    .local v8, width:I
+    const-string v9, "ImageLength"
 
-    const-string v12, "exifOrientation"
+    const/4 v10, 0x0
 
-    const-string v13, "Orientation"
+    invoke-virtual {v2, v9, v10}, Landroid/media/ExifInterface;->getAttributeInt(Ljava/lang/String;I)I
 
-    move-object/from16 v0, p1
+    move-result v4
 
-    iget v14, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->orientation:I
+    .local v4, height:I
+    if-lez v8, :cond_4
 
-    invoke-virtual {v3, v13, v14}, Landroid/media/ExifInterface;->getAttributeInt(Ljava/lang/String;I)I
-
-    move-result v13
-
-    invoke-static {v13}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
-
-    move-result-object v13
-
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
-
-    const-string v12, "GPSLatitude"
-
-    invoke-virtual {v3, v12}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v6
-
-    .local v6, latitude:Ljava/lang/String;
-    if-nez v6, :cond_4
-
-    move-object/from16 v0, p1
-
-    iget-object v12, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->location:Landroid/location/Location;
-
-    if-eqz v12, :cond_7
-
-    move-object/from16 v0, p1
-
-    iget-object v12, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->location:Landroid/location/Location;
-
-    invoke-virtual {v12}, Landroid/location/Location;->getLatitude()D
-
-    move-result-wide v12
-
-    invoke-static {v12, v13}, Ljava/lang/Double;->valueOf(D)Ljava/lang/Double;
-
-    move-result-object v12
-
-    :goto_1
-    invoke-static {v12}, Ljava/lang/String;->valueOf(Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v6
+    if-gtz v4, :cond_5
 
     :cond_4
-    const-string v12, "exifGPSLatitude"
+    iget-object v9, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v6}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v9}, Lmiui/util/ImageUtils;->getBitmapSize(Ljava/lang/String;)Landroid/graphics/BitmapFactory$Options;
 
-    const-string v12, "GPSLongitude"
+    move-result-object v0
 
-    invoke-virtual {v3, v12}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    .local v0, bitmapOptions:Landroid/graphics/BitmapFactory$Options;
+    iget v8, v0, Landroid/graphics/BitmapFactory$Options;->outWidth:I
 
-    move-result-object v7
+    iget v4, v0, Landroid/graphics/BitmapFactory$Options;->outHeight:I
 
-    .local v7, longitude:Ljava/lang/String;
-    if-nez v7, :cond_5
-
-    move-object/from16 v0, p1
-
-    iget-object v12, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->location:Landroid/location/Location;
-
-    if-eqz v12, :cond_8
-
-    move-object/from16 v0, p1
-
-    iget-object v12, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->location:Landroid/location/Location;
-
-    invoke-virtual {v12}, Landroid/location/Location;->getLongitude()D
-
-    move-result-wide v12
-
-    invoke-static {v12, v13}, Ljava/lang/Double;->valueOf(D)Ljava/lang/Double;
-
-    move-result-object v12
-
-    :goto_2
-    invoke-static {v12}, Ljava/lang/String;->valueOf(Ljava/lang/Object;)Ljava/lang/String;
-
-    move-result-object v7
-
+    .end local v0           #bitmapOptions:Landroid/graphics/BitmapFactory$Options;
     :cond_5
-    const-string v12, "exifGPSLongitude"
+    const-string v9, "exifImageWidth"
 
-    invoke-virtual {v10, v12, v7}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-static {v8}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    const-string v12, "exifMake"
+    move-result-object v10
 
-    const-string v13, "Make"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v9, "exifImageLength"
 
-    move-result-object v13
+    invoke-static {v4}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifModel"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
-    const-string v13, "Model"
+    const-string v9, "exifOrientation"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "Orientation"
 
-    move-result-object v13
+    const/4 v11, 0x0
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    invoke-virtual {v2, v10, v11}, Landroid/media/ExifInterface;->getAttributeInt(Ljava/lang/String;I)I
 
-    const-string v12, "Flash"
+    move-result v10
 
-    const-string v13, "exifFlash"
+    invoke-static {v10}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    invoke-static {v3, v12, v10, v13}, Lmiui/provider/GalleryCloudUtils;->putExifIntToContentValues(Landroid/media/ExifInterface;Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifGPSLatitudeRef"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
 
-    const-string v13, "GPSLatitudeRef"
+    const-string v9, "exifGPSLatitude"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "GPSLatitude"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifGPSLongitudeRef"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v13, "GPSLongitudeRef"
+    const-string v9, "exifGPSLongitude"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "GPSLongitude"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifExposureTime"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v13, "ExposureTime"
+    const-string v9, "exifMake"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "Make"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifFNumber"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v13, "FNumber"
+    const-string v9, "exifModel"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "Model"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifISOSpeedRatings"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v13, "ISOSpeedRatings"
+    const-string v9, "Flash"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "exifFlash"
 
-    move-result-object v13
+    invoke-static {v2, v9, v7, v10}, Lmiui/provider/GalleryCloudUtils;->putExifIntToContentValues(Landroid/media/ExifInterface;Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;)V
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    const-string v9, "exifGPSLatitudeRef"
 
-    const-string v12, "exifGPSAltitude"
+    const-string v10, "GPSLatitudeRef"
 
-    const-string v13, "GPSAltitude"
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v10
 
-    move-result-object v13
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    const-string v9, "exifGPSLongitudeRef"
 
-    const-string v12, "GPSAltitudeRef"
+    const-string v10, "GPSLongitudeRef"
 
-    const-string v13, "exifGPSAltitudeRef"
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-static {v3, v12, v10, v13}, Lmiui/provider/GalleryCloudUtils;->putExifIntToContentValues(Landroid/media/ExifInterface;Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifGPSTimeStamp"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v13, "GPSTimeStamp"
+    const-string v9, "exifExposureTime"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "ExposureTime"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "exifGPSDateStamp"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v13, "GPSDateStamp"
+    const-string v9, "exifFNumber"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "FNumber"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    const-string v12, "WhiteBalance"
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v13, "exifWhiteBalance"
+    const-string v9, "exifISOSpeedRatings"
 
-    invoke-static {v3, v12, v10, v13}, Lmiui/provider/GalleryCloudUtils;->putExifIntToContentValues(Landroid/media/ExifInterface;Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;)V
+    const-string v10, "ISOSpeedRatings"
 
-    const-string v12, "exifFocalLength"
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    const-string v13, "FocalLength"
+    move-result-object v10
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-result-object v13
+    const-string v9, "exifGPSAltitude"
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    const-string v10, "GPSAltitude"
 
-    const-string v12, "exifGPSProcessingMethod"
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    const-string v13, "GPSProcessingMethod"
+    move-result-object v10
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-result-object v13
+    const-string v9, "GPSAltitudeRef"
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    const-string v10, "exifGPSAltitudeRef"
 
-    const-string v12, "exifDateTime"
+    invoke-static {v2, v9, v7, v10}, Lmiui/provider/GalleryCloudUtils;->putExifIntToContentValues(Landroid/media/ExifInterface;Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;)V
 
-    const-string v13, "DateTime"
+    const-string v9, "exifGPSTimeStamp"
 
-    invoke-virtual {v3, v13}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+    const-string v10, "GPSTimeStamp"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v10, v12, v13}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v10
 
-    invoke-virtual/range {p0 .. p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    move-result-object v12
+    const-string v9, "exifGPSDateStamp"
 
-    sget-object v13, Lmiui/provider/GalleryCloudUtils;->CLOUD_URI:Landroid/net/Uri;
+    const-string v10, "GPSDateStamp"
 
-    invoke-virtual {v12, v13, v10}, Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    move-result-object v12
+    move-result-object v10
 
-    if-nez v12, :cond_6
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    const-string v12, "GalleryCloudUtils"
+    const-string v9, "WhiteBalance"
 
-    new-instance v13, Ljava/lang/StringBuilder;
+    const-string v10, "exifWhiteBalance"
 
-    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-static {v2, v9, v7, v10}, Lmiui/provider/GalleryCloudUtils;->putExifIntToContentValues(Landroid/media/ExifInterface;Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;)V
 
-    const-string v14, "saveToCloudDB, insert "
+    const-string v9, "exifFocalLength"
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v10, "FocalLength"
 
-    move-result-object v13
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    move-object/from16 v0, p1
+    move-result-object v10
 
-    iget-object v14, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const-string v9, "exifGPSProcessingMethod"
 
-    move-result-object v13
+    const-string v10, "GPSProcessingMethod"
 
-    const-string v14, " into database error."
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v10
 
-    move-result-object v13
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
 
-    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    const-string v9, "exifDateTime"
 
-    move-result-object v13
+    const-string v10, "DateTime"
 
-    invoke-static {v12, v13}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-virtual {v2, v10}, Landroid/media/ExifInterface;->getAttribute(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v10
+
+    invoke-virtual {v7, v9, v10}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
+
+    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v9
+
+    sget-object v10, Lmiui/provider/GalleryCloudUtils;->CLOUD_URI:Landroid/net/Uri;
+
+    invoke-virtual {v9, v10, v7}, Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
+
+    move-result-object v9
+
+    if-nez v9, :cond_6
+
+    const-string v9, "GalleryCloudUtils"
+
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v11, "saveToCloudDB, insert "
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    iget-object v11, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    const-string v11, " into database error."
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v10
+
+    invoke-static {v9, v10}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_0
     .catch Ljava/io/IOException; {:try_start_0 .. :try_end_0} :catch_0
     .catch Ljava/lang/IllegalArgumentException; {:try_start_0 .. :try_end_0} :catch_1
 
-    .end local v3           #exifInterface:Landroid/media/ExifInterface;
-    .end local v4           #file:Ljava/io/File;
-    .end local v5           #height:I
-    .end local v6           #latitude:Ljava/lang/String;
-    .end local v7           #longitude:Ljava/lang/String;
-    .end local v10           #values:Landroid/content/ContentValues;
-    .end local v11           #width:I
+    .end local v2           #exifInterface:Landroid/media/ExifInterface;
+    .end local v3           #file:Ljava/io/File;
+    .end local v4           #height:I
+    .end local v7           #values:Landroid/content/ContentValues;
+    .end local v8           #width:I
     :cond_6
-    :goto_3
-    const-string v12, "GalleryCloudUtils"
+    :goto_1
+    const-string v9, "GalleryCloudUtils"
 
-    new-instance v13, Ljava/lang/StringBuilder;
+    new-instance v10, Ljava/lang/StringBuilder;
 
-    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v14, "save to cloud db finished, time:"
+    const-string v11, "save to cloud db finished, time:"
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v13
+    move-result-object v10
 
     invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
 
-    move-result-wide v14
+    move-result-wide v11
 
-    sub-long/2addr v14, v8
+    sub-long/2addr v11, v5
 
-    invoke-virtual {v13, v14, v15}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v11, v12}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
 
-    move-result-object v13
+    move-result-object v10
 
-    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v13
+    move-result-object v10
 
-    invoke-static {v12, v13}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v10}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
     goto/16 :goto_0
 
-    .restart local v3       #exifInterface:Landroid/media/ExifInterface;
-    .restart local v4       #file:Ljava/io/File;
-    .restart local v5       #height:I
-    .restart local v6       #latitude:Ljava/lang/String;
-    .restart local v10       #values:Landroid/content/ContentValues;
-    .restart local v11       #width:I
-    :cond_7
-    const/4 v12, 0x0
-
-    goto/16 :goto_1
-
-    .restart local v7       #longitude:Ljava/lang/String;
-    :cond_8
-    const/4 v12, 0x0
-
-    goto/16 :goto_2
-
-    .end local v3           #exifInterface:Landroid/media/ExifInterface;
-    .end local v4           #file:Ljava/io/File;
-    .end local v5           #height:I
-    .end local v6           #latitude:Ljava/lang/String;
-    .end local v7           #longitude:Ljava/lang/String;
-    .end local v10           #values:Landroid/content/ContentValues;
-    .end local v11           #width:I
     :catch_0
-    move-exception v2
+    move-exception v1
 
-    .local v2, e:Ljava/io/IOException;
-    const-string v12, "GalleryCloudUtils"
+    .local v1, e:Ljava/io/IOException;
+    const-string v9, "GalleryCloudUtils"
 
-    new-instance v13, Ljava/lang/StringBuilder;
+    new-instance v10, Ljava/lang/StringBuilder;
 
-    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v14, "saveToCloudDB, create "
+    const-string v11, "saveToCloudDB, create "
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v13
+    move-result-object v10
 
-    move-object/from16 v0, p1
+    iget-object v11, p1, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
 
-    iget-object v14, v0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->path:Ljava/lang/String;
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v10
 
-    move-result-object v13
+    const-string v11, " ExifInterface error."
 
-    const-string v14, " ExifInterface error."
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result-object v10
 
-    move-result-object v13
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v10
 
-    move-result-object v13
+    invoke-static {v9, v10}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    invoke-static {v12, v13}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    goto :goto_1
 
-    goto :goto_3
-
-    .end local v2           #e:Ljava/io/IOException;
+    .end local v1           #e:Ljava/io/IOException;
     :catch_1
-    move-exception v2
+    move-exception v1
 
-    .local v2, e:Ljava/lang/IllegalArgumentException;
-    const-string v12, "GalleryCloudUtils"
+    .local v1, e:Ljava/lang/IllegalArgumentException;
+    const-string v9, "GalleryCloudUtils"
 
-    new-instance v13, Ljava/lang/StringBuilder;
+    new-instance v10, Ljava/lang/StringBuilder;
 
-    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v14, "saveToCloudDB failed:"
+    const-string v11, "saveToCloudDB failed:"
 
-    invoke-virtual {v13, v14}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    move-result-object v13
+    move-result-object v10
 
-    invoke-virtual {v13, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+    invoke-virtual {v10, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
 
-    move-result-object v13
+    move-result-object v10
 
-    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v13
+    move-result-object v10
 
-    invoke-static {v12, v13}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+    invoke-static {v9, v10}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    goto :goto_3
+    goto :goto_1
 .end method

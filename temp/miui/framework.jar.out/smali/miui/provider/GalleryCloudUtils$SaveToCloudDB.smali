@@ -1,4 +1,4 @@
-.class public Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;
+.class Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;
 .super Ljava/lang/Object;
 .source "GalleryCloudUtils.java"
 
@@ -9,7 +9,7 @@
 .end annotation
 
 .annotation system Ldalvik/annotation/InnerClass;
-    accessFlags = 0x9
+    accessFlags = 0xa
     name = "SaveToCloudDB"
 .end annotation
 
@@ -21,15 +21,11 @@
 
 .field public groupId:I
 
-.field public height:I
-
 .field public localFlag:I
 
-.field public location:Landroid/location/Location;
+.field public localGroupId:Ljava/lang/String;
 
 .field public mimeType:Ljava/lang/String;
-
-.field public orientation:I
 
 .field public path:Ljava/lang/String;
 
@@ -39,11 +35,9 @@
 
 .field public title:Ljava/lang/String;
 
-.field public width:I
-
 
 # direct methods
-.method public constructor <init>(Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JIIILandroid/location/Location;III)V
+.method private constructor <init>(Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JIIILjava/lang/String;)V
     .locals 0
     .parameter "path"
     .parameter "size"
@@ -51,13 +45,10 @@
     .parameter "title"
     .parameter "fileName"
     .parameter "dateTaken"
-    .parameter "width"
-    .parameter "height"
-    .parameter "orientation"
-    .parameter "location"
     .parameter "groupId"
     .parameter "serverType"
     .parameter "localFlag"
+    .parameter "localGroupId"
 
     .prologue
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
@@ -74,19 +65,33 @@
 
     iput-wide p7, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->dateTaken:J
 
-    iput p9, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->width:I
+    iput p9, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->groupId:I
 
-    iput p10, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->height:I
+    iput p10, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->serverType:I
 
-    iput p11, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->orientation:I
+    iput p11, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localFlag:I
 
-    iput-object p12, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->location:Landroid/location/Location;
+    iput-object p12, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localGroupId:Ljava/lang/String;
 
-    iput p13, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->groupId:I
+    return-void
+.end method
 
-    iput p14, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->serverType:I
+.method synthetic constructor <init>(Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JIIILjava/lang/String;Lmiui/provider/GalleryCloudUtils$1;)V
+    .locals 0
+    .parameter "x0"
+    .parameter "x1"
+    .parameter "x2"
+    .parameter "x3"
+    .parameter "x4"
+    .parameter "x5"
+    .parameter "x6"
+    .parameter "x7"
+    .parameter "x8"
+    .parameter "x9"
+    .parameter "x10"
 
-    iput p15, p0, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;->localFlag:I
+    .prologue
+    invoke-direct/range {p0 .. p12}, Lmiui/provider/GalleryCloudUtils$SaveToCloudDB;-><init>(Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JIIILjava/lang/String;)V
 
     return-void
 .end method

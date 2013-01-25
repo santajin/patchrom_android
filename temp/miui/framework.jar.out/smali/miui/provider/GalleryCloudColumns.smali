@@ -14,6 +14,8 @@
 
 .field public static final DEFAULT_GROUP_ID_INVALID:I = -0x1
 
+.field public static final DEFAULT_GROUP_ID_ROOT:I = 0x0
+
 .field public static final DEFAULT_GROUP_ID_SCREENSHOT:I = 0x2
 
 .field public static final DESCRIPTION:Ljava/lang/String; = "description"
@@ -130,6 +132,10 @@
 
 .field public static final INDEX_LOCAL_FLAG:I = 0x23
 
+.field public static final INDEX_LOCAL_GROUP_ID:I = 0x2a
+
+.field public static final INDEX_LOCAL_IMAGE_ID:I = 0x2b
+
 .field public static final INDEX_MICRO_THUMBNAIL_FILE:I = 0x29
 
 .field public static final INDEX_MIME_TYPE:I = 0x4
@@ -156,17 +162,25 @@
 
 .field public static final LOCAL_FLAG:Ljava/lang/String; = "localFlag"
 
-.field public static final LOCAL_FLAG_CREATE:I = 0x1
+.field public static final LOCAL_FLAG_AUTO_CREATE:I = 0x7
+
+.field public static final LOCAL_FLAG_COPY:I = 0x6
 
 .field public static final LOCAL_FLAG_DELETE:I = 0x2
 
-.field public static final LOCAL_FLAG_EDIT:I = 0x3
-
-.field public static final LOCAL_FLAG_FORCE_CREATE:I = 0x4
+.field public static final LOCAL_FLAG_HISTORY_CREATE:I = 0x4
 
 .field public static final LOCAL_FLAG_INVALID:I = -0x1
 
+.field public static final LOCAL_FLAG_MANUAL_CREATE:I = 0x8
+
+.field public static final LOCAL_FLAG_MOVE:I = 0x5
+
 .field public static final LOCAL_FLAG_SYNCED:I = 0x0
+
+.field public static final LOCAL_GROUP_ID:Ljava/lang/String; = "localGroupId"
+
+.field public static final LOCAL_IMAGE_ID:Ljava/lang/String; = "localImageId"
 
 .field public static final MICRO_THUMBNAIL_FILE:Ljava/lang/String; = "microthumbfile"
 
